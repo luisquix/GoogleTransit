@@ -4,6 +4,7 @@ variables:
   - name: LiveTrainData
     inputType: OutputTopic
     description: Sends the progress of the trains that are currently moving
+    defaultValue: LiveTrainData
     required: true
 dockerfile: dockerfile
 runEntryPoint: main.py
