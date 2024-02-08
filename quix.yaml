@@ -21,6 +21,26 @@ deployments:
         description: Sends the progress of the trains that are currently moving
         required: true
         value: LiveTrainData
+  - name: ArrivalDetection
+    application: ArrivalDetection
+    deploymentType: Service
+    version: 90c622de6ef231fa5acd80944baea7e0fa6a59ba
+    resources:
+      cpu: 200
+      memory: 500
+      replicas: 1
+    desiredStatus: Running
+    variables:
+      - name: LiveTrainData
+        inputType: InputTopic
+        description: Receives the progress of the trains that are currently moving
+        required: false
+        value: LiveTrainData
+      - name: ArrivalTrainData
+        inputType: OutputTopic
+        description: Sends the data from trains that are close to their destination
+        required: false
+        value: ArrivalTrainData
 
 # This section describes the Topics of the data pipeline
 topics:
