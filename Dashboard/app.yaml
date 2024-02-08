@@ -1,10 +1,10 @@
 name: Dashboard
 language: python
 variables:
-  - name: input
+  - name: ArrivalTrainData
     inputType: InputTopic
-    description: This is the input topic to read data from
-    defaultValue: ''
+    description: Receives the data from trains that are close to their destination
+    defaultValue: ArrivalTrainData
     required: true
 dockerfile: dockerfile
 runEntryPoint: main.py
