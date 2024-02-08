@@ -39,7 +39,7 @@ def calculate_progress(current_stop, next_stop):
 
 def main():
     # Path to your GTFS zip file
-    gtfs_zip_path = 'google_transit.zip'
+    gtfs_zip_path = 'stop_times.zip'
 
     # Directory where you want to extract the GTFS files
     extract_to_dir = 'extracted_gtfs'
@@ -49,12 +49,13 @@ def main():
     with zipfile.ZipFile(gtfs_zip_path, 'r') as zip_ref:
         zip_ref.extractall(extract_to_dir)
 
-    # Now, you can read any GTFS file into a Pandas DataFrame
-    # Example: Reading stops.txt
     print('Parsing data')
     stops_df = pd.read_csv(os.path.join(extract_to_dir, 'stop_times.txt'))
     print('Data parsed')
     print('Sorting data')
+    stops_df.columns = stops_df.columns.str.strip()
+    stops_df = stops_df.map(lambda x: x.strip() if isinstance(x, str) else x)
+    print(stops_df.columns)
     stops_df.sort_values(by=['trip_id', 'stop_sequence'], inplace=True)
     print('Data sorted')
 
@@ -65,43 +66,29 @@ def main():
     producer = app.get_producer()
     serializer = JSONSerializer()
     headers = stops_df.columns.tolist()
-    last_progress_by_tripId = {}
 
     with producer:
         while True:
+            print("new iteration")
             # Iterate over the data from CSV file
             for index, row in stops_df.iterrows():
                 if index + 1 >= len(stops_df):
                     continue
-
                 row_data = { header: row[header] for header in headers }
                 row_data["Timestamp"] = time.time_ns()
 
                 # Calculate progress and add to row_data
                 
-                found_next_row = False
-                next_row = stops_df.iloc[index + 1]
-                for next_index in range(index + 1, len(stops_df)):
-                    potential_next_row = stops_df.iloc[next_index]
-                    if potential_next_row["trip_id"] == row["trip_id"]:
-                        next_row = potential_next_row
-                        found_next_row = True
-                        break
-                
-                if not found_next_row:
-                    break
-                
                 tripId = row_data["trip_id"]
-
-                last_progress = last_progress_by_tripId.get(tripId)
-                progress = calculate_progress(row, next_row)
-                last_progress_by_tripId[tripId] = max(0, min(1, progress))
-                if last_progress is not None and (progress <= 0 or progress >= 1 or last_progress == max(0, min(1, progress))):
-                    continue 
-
-                if progress <= 0 or progress >= 1:
-                    continue
                 
+                next_row = stops_df.iloc[index + 1]
+                
+                if next_row["trip_id"] != row["trip_id"]:
+                    continue    
+                
+                progress = calculate_progress(row, next_row)
+                
+
                 row_data['arrival_to_destination_time'] = next_row['arrival_time']
                 row_data['next_stop_id'] = int(next_row['stop_id'])
 
@@ -110,7 +97,6 @@ def main():
                 serialized_value = serializer(
                     value=row_data, ctx=SerializationContext(topic=input_topic.name)
                 )
-                
                 # publish the data to the topic
                 producer.produce(
                     topic=input_topic.name,
