@@ -58,12 +58,28 @@
 
         function displayPackageData(data) {
             // Update the dictionary with the new package data, keyed by trip_id
-            const now = new Date().toLocaleTimeString('en-US', { hour12: false });
 
             packagesByRouteId[data.tripId + " " + data.stop_id] = data;
 
+            // Iterate over each entry in packagesByRouteId
             Object.entries(packagesByRouteId).forEach(([routeId, data]) => {
+                // Check if progress is greater than 1.05
                 if (data.progress > 1.05) {
+                    // Delete the entry from packagesByRouteId
+                    delete packagesByRouteId[routeId];
+                }
+                // Get the current time
+                const now = new Date();
+                // Subtract 1 minute from the current time
+                const oneMinuteAgo = new Date(now.getTime() - 60000); // 60000 milliseconds = 1 minute
+                const year = now.getFullYear();
+                const month = now.getMonth() + 1; // Month is zero-based, so we add 1
+                const day = now.getDay();
+                // Convert arrival_to_destination_time to a Date object
+                const arrivalTime = new Date(`${year}-${month}-${day}T${data.arrival_to_destination_time}`);
+                // Check if arrival_to_destination_time is smaller than one minute ago
+                if (arrivalTime < oneMinuteAgo) {
+                    // Delete the entry from packagesByRouteId
                     delete packagesByRouteId[routeId];
                 }
             });
@@ -89,7 +105,7 @@
         // Function to handle incoming "PackageReceived" messages
         connection.on("PackageReceived", (packageData) => {
             console.log("Package received: ", packageData);
-            if (packageData.value.startsWith('{"Value":"Skipped')) {
+            if (packageData.value.startsWith('{"Value":"Skipped') || packageData.value.startsWith('(Binary ')) {
                 return;
             }
             const cleanedData = packageData.value.replace(/\r?\n|\r/g, "");
