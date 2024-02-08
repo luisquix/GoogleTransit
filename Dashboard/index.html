@@ -2,27 +2,34 @@
 <html lang="en">
   <head>
     <title>Hello SignalR</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@picocss/pico@1/css/pico.min.css">
     <script src="https://cdnjs.cloudflare.com/ajax/libs/microsoft-signalr/6.0.1/signalr.js"></script>
   </head>
 
-  <h1>
-    Arrivals
-  </h1>
-  <div id="dataDisplay"></div>
+    <main class="contairner">
+        <h1>
+            Arrivals
+        </h1>
+        <div id="dataDisplay"></div>
+    </main>
   
   <script>
         let packagesByTripId = {}; // This will hold our data
 
         function renderDataTable() {
             const displayElement = document.getElementById('dataDisplay');
-            let tableContent = `<table border="1">
-                                    <tr>
-                                        <th>Trip ID</th>
-                                        <th>Departure Time</th>
-                                        <th>Arrival Time</th>
-                                        <th>Stop ID</th>
-                                        <th>Progress</th>
-                                    </tr>`;
+            let tableContent = `<table>
+                                    <thead>
+                                        <tr>
+                                            <th>Trip ID</th>
+                                            <th>Departure Time</th>
+                                            <th>Arrival Time</th>
+                                            <th>Stop ID</th>
+                                            <th>Next Stop ID</th>
+                                            <th>Progress</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>`;
 
             // Iterate over packagesByTripId to build table rows
             for (const [tripId, data] of Object.entries(packagesByTripId)) {
@@ -30,14 +37,15 @@
                     <tr>
                         <td>${tripId}</td>
                         <td>${data.departure_time}</td>
-                        <td>${data.arrival_time}</td>
+                        <td>${data.arrival_to_destination_time}</td>
                         <td>${data.stop_id}</td>
+                        <td>${data.next_stop_id}</td>
                         <td>${data.progress}</td>
                     </tr>
                 `;
             }
 
-            tableContent += `</table>`;
+            tableContent += `</tbody></table>`;
 
             // Update the display element with the new table
             displayElement.innerHTML = tableContent;
