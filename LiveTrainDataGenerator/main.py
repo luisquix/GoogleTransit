@@ -56,7 +56,7 @@ def main():
     # Example: Reading stops.txt
     stops_df = pd.read_csv(os.path.join(extract_to_dir, 'stop_times.txt'))
 
-    app = Application.Quix("transformation-v1", auto_offset_reset="latest")
+    app = Application.Quix("TrainData", auto_offset_reset="latest")
 
     input_topic = app.topic(os.environ["input"])
 
