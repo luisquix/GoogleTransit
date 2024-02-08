@@ -1,13 +1,13 @@
 name: ArrivalDetection
 language: python
 variables:
-  - name: input
+  - name: LiveTrainData
     inputType: InputTopic
-    description: Name of the input topic to listen to.
+    description: Receives the progress of the trains that are currently moving
     required: false
   - name: output
-    inputType: OutputTopic
-    description: Name of the output topic to write to.
+    inputType: ArrivalTrainData
+    description: Sends the data from trains that are close to their destination
     defaultValue: transform
     required: false
 dockerfile: dockerfile
