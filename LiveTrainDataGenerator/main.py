@@ -7,8 +7,8 @@ import quixstreams as qx
 from quixstreams import Application, State
 from quixstreams.models.serializers.quix import QuixDeserializer, QuixTimeseriesSerializer, QuixSerializer, JSONSerializer, SerializationContext
 # import the dotenv module to load environment variables from a file
-from dotenv import load_dotenv
-load_dotenv(override=False)
+# from dotenv import load_dotenv
+# load_dotenv(override=False)
 
 def parse_gtfs_time(gtfs_time_str):
     """Parse a GTFS time string, which might exceed 24 hours, into a datetime.timedelta."""
