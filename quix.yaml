@@ -41,6 +41,24 @@ deployments:
         description: Sends the data from trains that are close to their destination
         required: false
         value: ArrivalTrainData
+  - name: Dashboard
+    application: Dashboard
+    deploymentType: Service
+    version: dac9cfc8abf20c2ee27421e15925e39a2c54b844
+    resources:
+      cpu: 200
+      memory: 500
+      replicas: 1
+    publicAccess:
+      enabled: true
+      urlPrefix: dashboard-dac9cfc
+    desiredStatus: Running
+    variables:
+      - name: ArrivalTrainData
+        inputType: InputTopic
+        description: Receives the data from trains that are close to their destination
+        required: true
+        value: ArrivalTrainData
 
 # This section describes the Topics of the data pipeline
 topics:
