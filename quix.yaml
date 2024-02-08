@@ -9,7 +9,7 @@ deployments:
   - name: Live Train Data Generator
     application: LiveTrainDataGenerator
     deploymentType: Service
-    version: 648a82408268fd7b715de6661f2161c092c0b93b
+    version: 9e0890be0f2f4af3a20da941b2c7ff6d169b8779
     resources:
       cpu: 200
       memory: 500
@@ -17,7 +17,7 @@ deployments:
     desiredStatus: Stopped
     variables:
       - name: LiveTrainData
-        inputType: InputTopic
+        inputType: OutputTopic
         description: Sends the progress of the trains that are currently moving
         required: true
         value: LiveTrainData
