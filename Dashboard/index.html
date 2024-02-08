@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="en">
   <head>
-    <title>Hello SignalR</title>
+    <title>Arrivals</title>
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@picocss/pico@1/css/pico.min.css">
     <script src="https://cdnjs.cloudflare.com/ajax/libs/microsoft-signalr/6.0.1/signalr.js"></script>
   </head>
@@ -31,10 +31,6 @@
                                 </thead>
                                 <tbody>`;
 
-            // Iterate over packagesByTripId to build table rows
-            // const sortedEntries = Object.entries(packagesByRouteId).sort(([, dataA], [, dataB]) => {
-            //     return dataB.progress - dataA.progress; // Sort in descending order of progress
-            // });
             const sortedEntries = Object.entries(packagesByRouteId).sort(([, dataA], [, dataB]) => {
                 const arrivalTimeA = new Date(`2000-01-01T${dataA.arrival_to_destination_time}`);
                 const arrivalTimeB = new Date(`2000-01-01T${dataB.arrival_to_destination_time}`);
