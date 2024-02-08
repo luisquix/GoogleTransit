@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <title>Hello SignalR</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/microsoft-signalr/6.0.1/signalr.js"></script>
+  </head>
+
+  <h1>
+    Arrivals
+  </h1>
+  <div id="dataDisplay"></div>
+  
+  <script>
+        let packagesByTripId = {}; // This will hold our data
+
+        function renderDataTable() {
+            const displayElement = document.getElementById('dataDisplay');
+            let tableContent = `<table border="1">
+                                    <tr>
+                                        <th>Trip ID</th>
+                                        <th>Departure Time</th>
+                                        <th>Arrival Time</th>
+                                        <th>Stop ID</th>
+                                        <th>Progress</th>
+                                    </tr>`;
+
+            // Iterate over packagesByTripId to build table rows
+            for (const [tripId, data] of Object.entries(packagesByTripId)) {
+                tableContent += `
+                    <tr>
+                        <td>${tripId}</td>
+                        <td>${data.departure_time}</td>
+                        <td>${data.arrival_time}</td>
+                        <td>${data.stop_id}</td>
+                        <td>${data.progress}</td>
+                    </tr>
+                `;
+            }
+
+            tableContent += `</table>`;
+
+            // Update the display element with the new table
+            displayElement.innerHTML = tableContent;
+        }
+
+
+        function displayPackageData(data) {
+            // Update the dictionary with the new package data, keyed by trip_id
+            packagesByTripId[data.trip_id] = data;
+
+            // Now, render the updated data in a table format
+            renderDataTable();
+        }
+
+        const options = {
+            accessTokenFactory: () => 'pat-50e0c8a6d99b4830b06315491b9282af'
+        };
+
+        const connection = new signalR.HubConnectionBuilder()
+            .withUrl("https://reader-luishackaton-googletransit-develop.platform.quix.io/hub", options)
+            .configureLogging(signalR.LogLevel.Information)
+            .build();
+
+        // Function to handle incoming "PackageReceived" messages
+        connection.on("PackageReceived", (packageData) => {
+            console.log("Package received: ", packageData);
+            if (packageData.value.startsWith('{"Value":"Skipped')) {
+                return;
+            }
+            const cleanedData = packageData.value.replace(/\r?\n|\r/g, "");
+            const pasedData = JSON.parse(cleanedData);
+            displayPackageData(pasedData);
+        });
+
+        // Start the connection
+        connection.start()
+            .then(() => {
+                console.log("SignalR connected.");
+                // Once connected, send "SubscribeToPackages" with a parameter
+                const topicId = "luishackaton-googletransit-develop-ArrivalTrainData";
+                return connection.invoke("SubscribeToPackages", topicId);
+            })
+            .then(() => {
+                console.log("Subscription to topic successful.");
+            })
+            .catch(err => {
+                console.error("Error in connection or subscription: ", err);
+            });
+
+  </script>
+</html>
