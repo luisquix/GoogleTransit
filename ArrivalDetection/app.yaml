@@ -5,8 +5,8 @@ variables:
     inputType: InputTopic
     description: Receives the progress of the trains that are currently moving
     required: false
-  - name: output
-    inputType: ArrivalTrainData
+  - name: ArrivalTrainData
+    inputType: OutputTopic
     description: Sends the data from trains that are close to their destination
     defaultValue: transform
     required: false
