@@ -5,7 +5,28 @@ metadata:
   version: 1.0
 
 # This section describes the Deployments of the data pipeline
-deployments: []
+deployments:
+  - name: Live Train Data Generator
+    application: LiveTrainDataGenerator
+    deploymentType: Service
+    version: 648a82408268fd7b715de6661f2161c092c0b93b
+    resources:
+      cpu: 200
+      memory: 500
+      replicas: 1
+    variables:
+      - name: LiveTrainData
+        inputType: InputTopic
+        description: Sends the progress of the trains that are currently moving
+        required: true
+        value: LiveTrainData
 
 # This section describes the Topics of the data pipeline
-topics: []
+topics:
+  - name: LiveTrainData
+    persisted: false
+    configuration:
+      partitions: 1
+      replicationFactor: 2
+      retentionInMinutes: 1440
+      retentionInBytes: 52428800
