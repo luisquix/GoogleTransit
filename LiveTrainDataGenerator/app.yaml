@@ -1,10 +1,10 @@
 name: Live Train Data Generator
 language: python
 variables:
-  - name: LiveTrainData
-    inputType: OutputTopic
-    description: Sends the progress of the trains that are currently moving
-    defaultValue: LiveTrainData
+  - name: ArrivalTrainData
+    inputType: InputTopic
+    description: Sends the data from trains that are close to their destination
+    defaultValue: ArrivalTrainData
     required: true
 dockerfile: dockerfile
 runEntryPoint: main.py
