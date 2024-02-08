@@ -9,7 +9,7 @@ deployments:
   - name: Live Train Data Generator
     application: LiveTrainDataGenerator
     deploymentType: Service
-    version: 9e0890be0f2f4af3a20da941b2c7ff6d169b8779
+    version: bb212f66a2df9afc7d02187fc691c5042067e528
     resources:
       cpu: 200
       memory: 500
