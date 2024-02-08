@@ -58,7 +58,7 @@ def main():
 
     app = Application.Quix("TrainData", auto_offset_reset="latest")
 
-    input_topic = app.topic(os.environ["input"])
+    input_topic = app.topic(os.environ["LiveTrainData"])
 
     producer = app.get_producer()
     serializer = JSONSerializer()
