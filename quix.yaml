@@ -44,7 +44,7 @@ deployments:
   - name: Dashboard
     application: Dashboard
     deploymentType: Service
-    version: dac9cfc8abf20c2ee27421e15925e39a2c54b844
+    version: 12abf104d4af73e5d2dda5755a0f9f156eb189a7
     resources:
       cpu: 200
       memory: 500
