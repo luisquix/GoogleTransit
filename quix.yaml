@@ -52,7 +52,7 @@ deployments:
     publicAccess:
       enabled: true
       urlPrefix: dashboard-dac9cfc
-    desiredStatus: Running
+    desiredStatus: Stopped
     variables:
       - name: ArrivalTrainData
         inputType: InputTopic
