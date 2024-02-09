@@ -24,12 +24,12 @@ deployments:
   - name: ArrivalDetection
     application: ArrivalDetection
     deploymentType: Service
-    version: 2f4a5b006657763e58fc66f9d704a75614b8ea04
+    version: 3034773c373dc9b65a2dcf465856755e68864bf8
     resources:
       cpu: 200
       memory: 500
       replicas: 1
-    desiredStatus: Stopped
+    desiredStatus: Running
     variables:
       - name: LiveTrainData
         inputType: InputTopic
