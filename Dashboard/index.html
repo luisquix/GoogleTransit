@@ -71,7 +71,7 @@
                 // Get the current time
                 const now = new Date();
                 // Subtract 1 minute from the current time
-                const oneMinuteAgo = new Date(now.getTime() - 60000); // 60000 milliseconds = 1 minute
+                const oneMinuteAgo = new Date(now.getUTCDate() - 60000); // 60000 milliseconds = 1 minute
                 const year = now.getFullYear();
                 const month = now.getMonth() + 1; // Month is zero-based, so we add 1
                 const day = now.getDay();
