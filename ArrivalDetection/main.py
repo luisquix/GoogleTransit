@@ -3,8 +3,8 @@ import pandas as pd
 from quixstreams import Application, State
 from quixstreams.models.serializers.quix import QuixDeserializer, QuixTimeseriesSerializer
 # import the dotenv module to load environment variables from a file
-from dotenv import load_dotenv
-load_dotenv(override=False)
+# from dotenv import load_dotenv
+# load_dotenv(override=False)
 
 app = Application.Quix("TrainData", auto_offset_reset="latest")
 
