@@ -24,7 +24,7 @@ deployments:
   - name: ArrivalDetection
     application: ArrivalDetection
     deploymentType: Service
-    version: c4b616feedd5059c17d911ddfb6a775efc09648e
+    version: 3034773c373dc9b65a2dcf465856755e68864bf8
     resources:
       cpu: 200
       memory: 500
