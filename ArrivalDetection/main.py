@@ -3,8 +3,8 @@ import pandas as pd
 from quixstreams import Application, State
 from quixstreams.models.serializers.quix import QuixDeserializer, QuixTimeseriesSerializer
 # import the dotenv module to load environment variables from a file
-# from dotenv import load_dotenv
-# load_dotenv(override=False)
+from dotenv import load_dotenv
+load_dotenv(override=False)
 
 app = Application.Quix("TrainData", auto_offset_reset="latest")
 
@@ -29,10 +29,31 @@ sdf = app.dataframe(input_topic)
 
 sdf = sdf[(sdf["progress"] > 0.9 )]
 sdf = sdf[(sdf["progress"] < 1.1 )]
-sdf['stop_name'] = sdf.apply(lambda value: stops_df.loc[stops_df['stop_id'] == value['stop_id'], 'stop_name'].iloc[0])
-sdf['next_stop_name'] = sdf.apply(lambda value: stops_df.loc[stops_df['stop_id'] == value['next_stop_id'], 'stop_name'].iloc[0])
-sdf['route_id'] = sdf.apply(lambda value: trips_df.loc[trips_df['trip_id'] == value['trip_id'], 'route_id'].iloc[0])
-sdf['route_name'] = sdf.apply(lambda value: routes_df.loc[routes_df['route_id'] == value['route_id'], 'route_long_name'].iloc[0])
+def safe_get_stop_name(stop_id):
+    try:
+        return stops_df.loc[stops_df['stop_id'] == stop_id, 'stop_name'].iloc[0]
+    except IndexError:
+        return None  # or a default value like 'Unknown'
+def safe_get_next_stop_name(next_stop_id):
+    try:
+        return stops_df.loc[stops_df['stop_id'] == next_stop_id, 'stop_name'].iloc[0]
+    except IndexError:
+        return None  # or a default value like 'Unknown'
+def safe_get_route_id(trip_id):
+    try:
+        return trips_df.loc[trips_df['trip_id'] == trip_id, 'route_id'].iloc[0]
+    except IndexError:
+        return None  # or a default value
+def safe_get_route_name(route_id):
+    try:
+        return routes_df.loc[routes_df['route_id'] == route_id, 'route_long_name'].iloc[0]
+    except IndexError:
+        return None  # or a default value like 'Unknown Route'
+
+sdf['stop_name'] = sdf.apply(lambda value: safe_get_stop_name(value['stop_id']))
+sdf['next_stop_name'] = sdf.apply(lambda value: safe_get_next_stop_name(value['next_stop_id']))
+sdf['route_id'] = sdf.apply(lambda value: safe_get_route_id(value['trip_id']))
+sdf['route_name'] = sdf.apply(lambda value: safe_get_route_name(value['route_id']))
 
 # sdf = sdf.update(lambda row: print(row["progress"]))
 sdf = sdf.to_topic(output_topic)
