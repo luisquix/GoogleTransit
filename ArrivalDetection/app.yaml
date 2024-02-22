@@ -6,7 +6,7 @@ variables:
     description: Receives the progress of the trains that are currently moving
     defaultValue: LiveTrainData
     required: false
-  - name: ArrivalTrainData
+  - name: ArrivalTrainData2
     inputType: OutputTopic
     description: Sends the data from trains that are close to their destination
     defaultValue: ArrivalTrainDatadddddddddd

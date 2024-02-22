@@ -41,6 +41,11 @@ deployments:
         description: Sends the data from trains that are close to their destination
         required: false
         value: ArrivalTrainDatadddddddddd
+      - name: ArrivalTrainData2
+        inputType: OutputTopic
+        description: Sends the data from trains that are close to their destination
+        required: false
+        value: ArrivalTrainDatadddddddddd
   - name: Dashboard
     application: Dashboard
     deploymentType: Service
