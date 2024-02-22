@@ -24,7 +24,7 @@ deployments:
   - name: ArrivalDetection
     application: ArrivalDetection
     deploymentType: Service
-    version: 15398aad1565daedd6d9d38852bd92cf6f8303c7
+    version: latest
     resources:
       cpu: 200
       memory: 500
@@ -40,7 +40,7 @@ deployments:
         inputType: OutputTopic
         description: Sends the data from trains that are close to their destination
         required: false
-        value: ArrivalTrainData
+        value: ArrivalTrainDatadddddddddd
   - name: Dashboard
     application: Dashboard
     deploymentType: Service

@@ -9,7 +9,7 @@ variables:
   - name: ArrivalTrainData
     inputType: OutputTopic
     description: Sends the data from trains that are close to their destination
-    defaultValue: ArrivalTrainData
+    defaultValue: ArrivalTrainDatadddddddddd
     required: false
 dockerfile: dockerfile
 runEntryPoint: main.py
