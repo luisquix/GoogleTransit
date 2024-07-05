@@ -3,3 +3,7 @@
 */state/*
 */venv/*
 */.env
+.env
+.venv/
+certificates/
+.vscode/
